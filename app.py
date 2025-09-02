@@ -69,7 +69,7 @@ light_conditions = st.sidebar.selectbox("Light Conditions", options=df['Light_Co
 weather_conditions = st.sidebar.selectbox("Weather Conditions", options=df['Weather_Conditions'].unique(), index=0)
 road_surface = st.sidebar.selectbox("Road Surface Conditions", options=df['Road_Surface_Conditions'].unique(), index=0)
 num_vehicles = st.sidebar.number_input("Number of Vehicles Involved", 1, 10, 2)
-num_casualties = st.sidebar.number_input("Number of Casualties", 1, 15, 1)
+
 
 # --- Prediction Logic ---
 if st.sidebar.button("Predict Severity", type="primary"):
