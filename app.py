@@ -19,7 +19,7 @@ st.markdown("""
     <style>
     /* Page background color */
     .main {
-        background-color: #f5f7fa;
+        background-color: #FFD700;
     }
     
     /* Title color */
