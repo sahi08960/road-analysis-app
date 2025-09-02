@@ -6,6 +6,20 @@ import joblib
 import zipfile
 import os
 
+import zipfile
+import pandas as pd
+
+def load_and_prep_data():
+    zip_path = "archive.zip"  # updated file name
+    
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        csv_filename = zip_ref.namelist()[0]  # first file inside zip
+        with zip_ref.open(csv_filename) as f:
+            df = pd.read_csv(f)
+    
+    return df
+
+
 # --- Page Configuration ---
 st.set_page_config(
     page_title="road-analysis-app",
