@@ -117,7 +117,7 @@ if st.button("Predict Severity"):
     prediction = model.predict(input_features)[0]
     st.success(f"Predicted Accident Severity: {prediction}")
 
-    })
+    )
 
     prediction_index = model.predict(input_features)[0]
     prediction_proba = model.predict_proba(input_features)[0]
