@@ -98,8 +98,8 @@ if st.sidebar.button("Predict Severity", type="primary"):
         'Carriageway_Hazards': [df['Carriageway_Hazards'].median()],
         'Urban_or_Rural_Area': [df['Urban_or_Rural_Area'].median()],
         'Did_Police_Officer_Attend_Scene_of_Accident': [df['Did_Police_Officer_Attend_Scene_of_Accident'].median()],
-        'Month': [df['Month'].median()],
-        'Weekday': [df['Weekday'].median()],
+        #'Month': [df['Month'].median()],
+        #'Weekday': [df['Weekday'].median()],
         'Hour': [hour]
     })
 
