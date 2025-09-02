@@ -72,35 +72,51 @@ num_vehicles = st.sidebar.number_input("Number of Vehicles Involved", 1, 10, 2)
 num_casualties = st.sidebar.number_input("Number of Casualties", 1, 15, 1)
 
 # --- Prediction Logic ---
-if st.sidebar.button("Predict Severity", type="primary"):
-    input_features = pd.DataFrame({
-        'longitude': [78.9629], 'latitude': [20.5937],
-        'Police_Force': [df['Police_Force'].median()],
-        'Number_of_Vehicles': [num_vehicles],
-        'Number_of_Casualties': [num_casualties],
-        'Day_of_Week': [day_of_week],
-        'Local_Authority_(District)': [df['Local_Authority_(District)'].median()],
-        'Local_Authority_(Highway)': [df['Local_Authority_(Highway)'].mode()[0]],
-        '1st_Road_Class': [df['1st_Road_Class'].median()],
-        '1st_Road_Number': [df['1st_Road_Number'].median()],
-        'Road_Type': [df['Road_Type'].median()],
-        'Speed_limit': [df['Speed_limit'].median()],
-        'Junction_Detail': [df['Junction_Detail'].median()],
-        'Junction_Control': [df['Junction_Control'].median()],
-        '2nd_Road_Class': [df['2nd_Road_Class'].median()],
-        '2nd_Road_Number': [df['2nd_Road_Number'].median()],
-        'Pedestrian_Crossing-Human_Control': [df['Pedestrian_Crossing-Human_Control'].median()],
-        'Pedestrian_Crossing-Physical_Facilities': [df['Pedestrian_Crossing-Physical_Facilities'].median()],
-        'Light_Conditions': [light_conditions],
-        'Weather_Conditions': [weather_conditions],
-        'Road_Surface_Conditions': [road_surface],
-        'Special_Conditions_at_Site': [df['Special_Conditions_at_Site'].median()],
-        'Carriageway_Hazards': [df['Carriageway_Hazards'].median()],
-        'Urban_or_Rural_Area': [df['Urban_or_Rural_Area'].median()],
-        'Did_Police_Officer_Attend_Scene_of_Accident': [df['Did_Police_Officer_Attend_Scene_of_Accident'].median()],
-        'Month': [df['Month'].median()],
-        'Weekday': [df['Weekday'].median()],
-        'Hour': [hour]
+if st.button("Predict Severity"):
+    input_data = {
+        "Latitude": latitude,
+        "Longitude": longitude,
+        "Temperature(F)": temperature,
+        "Humidity(%)": humidity,
+        "Pressure(in)": pressure,
+        "Visibility(mi)": visibility,
+        "Wind_Speed(mph)": wind_speed,
+        "Distance(mi)": distance,
+        "Side": side,
+        "Amenity": amenity,
+        "Bump": bump,
+        "Crossing": crossing,
+        "Give_Way": give_way,
+        "Junction": junction,
+        "No_Exit": no_exit,
+        "Railway": railway,
+        "Roundabout": roundabout,
+        "Station": station,
+        "Stop": stop,
+        "Traffic_Calming": traffic_calming,
+        "Traffic_Signal": traffic_signal,
+        "Turning_Loop": turning_loop,
+        "Start_Hour": start_hour,
+        "Weekday": weekday,
+        "Month": month,
+        "Year": year
+    }
+
+    input_features = pd.DataFrame([input_data])
+
+    # ✅ Align columns with model's expected features
+    expected_cols = list(model.feature_names_in_)  # or your saved expected columns list
+    for col in expected_cols:
+        if col not in input_features.columns:
+            input_features[col] = 0  # Default value for missing columns
+
+    # Reorder columns
+    input_features = input_features[expected_cols]
+
+    # ✅ Make prediction
+    prediction = model.predict(input_features)[0]
+    st.success(f"Predicted Accident Severity: {prediction}")
+
     })
 
     prediction_index = model.predict(input_features)[0]
