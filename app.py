@@ -17,36 +17,64 @@ st.set_page_config(
 # ✅ Add Custom CSS for Background & Button Styling
 st.markdown("""
     <style>
-    /* Page background color */
+    /* Main page background */
     .main {
-        background-color: #FFD700;
+        background-color: #FFD700; /* Yellow */
     }
-    
-    /* Title color */
+
+    /* Headings color */
     h1, h2, h3 {
         color: #ff4b4b;
     }
-    
-    /* Button styling */
+
+    /* Predict Button Styling */
     .stButton>button {
-        background-color: #4CAF50;
+        background: linear-gradient(90deg, #ff4b4b, #ff9800);
         color: white;
-        border-radius: 10px;
+        border-radius: 12px;
         font-size: 18px;
+        font-weight: bold;
         padding: 12px 28px;
         border: none;
         cursor: pointer;
-        transition: 0.3s;
+        transition: all 0.4s ease-in-out;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
     }
     .stButton>button:hover {
-        background-color: #45a049;
+        background: linear-gradient(90deg, #ff9800, #ff4b4b);
         color: #fff;
-        transform: scale(1.05);
+        transform: scale(1.07);
     }
 
-    /* Sidebar background */
+    /* Sidebar starry background */
     section[data-testid="stSidebar"] {
-        background-color: #e6f2ff;
+        background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        position: relative;
+        overflow: hidden;
+        color: white;
+    }
+
+    /* Stars effect */
+    section[data-testid="stSidebar"]::before {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: white;
+        box-shadow:
+            50px 80px white,
+            100px 150px white,
+            150px 250px white,
+            200px 100px white,
+            250px 180px white,
+            300px 200px white,
+            350px 120px white;
+        animation: starryMove 50s linear infinite;
+    }
+
+    @keyframes starryMove {
+        from { transform: translateY(0px); }
+        to { transform: translateY(-1000px); }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -186,3 +214,4 @@ st.pydeck_chart(pdk.Deck(
         ),
     ],
 ))
+
