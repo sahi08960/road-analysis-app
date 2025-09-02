@@ -80,7 +80,7 @@ if st.sidebar.button("Predict Severity", type="primary"):
         'Number_of_Casualties': [num_casualties],
         'Day_of_Week': [day_of_week],
         'Local_Authority_(District)': [df['Local_Authority_(District)'].median()],
-        'Local_Authority_(Highway)': [df['Local_Authority_(Highway)'].median()],
+        'Local_Authority_(Highway)': [df['Local_Authority_(Highway)'].mode()[0]],
         '1st_Road_Class': [df['1st_Road_Class'].median()],
         '1st_Road_Number': [df['1st_Road_Number'].median()],
         'Road_Type': [df['Road_Type'].median()],
