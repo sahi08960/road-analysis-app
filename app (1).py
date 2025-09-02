@@ -8,7 +8,7 @@ import os
 
 # --- Page Configuration ---
 st.set_page_config(
-    page_title="Road Accident Severity Prediction",
+    page_title="road-analysis-app",
     page_icon="🚗",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -18,7 +18,9 @@ st.set_page_config(
 @st.cache_resource
 def load_model():
     """Load the trained XGBoost model."""
-    return joblib.load('xgb_accident_model.pkl')
+    return joblib.load('xgb_model.pkl')
+    
+
 
 @st.cache_data
 def load_and_prep_data():
