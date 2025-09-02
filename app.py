@@ -62,16 +62,16 @@ st.sidebar.header("Simulate an Accident Scenario")
 hour = st.sidebar.slider("Hour of Day", 0, 23, 17)
 day_of_week = st.sidebar.selectbox("Day of Week", options=range(1, 8),
                                    format_func=lambda x: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'][x-1], index=4)
-light_conditions = st.sidebar.selectbox("Light Conditions", options=df['Light_Conditions'].unique(), index=0)
-weather_conditions = st.sidebar.selectbox("Weather Conditions", options=df['Weather_Conditions'].unique(), index=0)
-road_surface = st.sidebar.selectbox("Road Surface Conditions", options=df['Road_Surface_Conditions'].unique(), index=0)
+light_conditions = st.sidebar.selectbox("Light Conditions", options=df['Light_Conditions'].dropna().unique(), index=0)
+weather_conditions = st.sidebar.selectbox("Weather Conditions", options=df['Weather_Conditions'].dropna().unique(), index=0)
+road_surface = st.sidebar.selectbox("Road Surface Conditions", options=df['Road_Surface_Conditions'].dropna().unique(), index=0)
 num_vehicles = st.sidebar.number_input("Number of Vehicles Involved", 1, 10, 2)
 num_casualties = st.sidebar.number_input("Number of Casualties", 1, 15, 1)
 
 # --- Prediction Logic ---
 if st.button("Predict Severity"):
     try:
-        # Create input data based on sidebar inputs
+        # Create input data
         input_data = {
             "Hour": hour,
             "Day_of_Week": day_of_week,
@@ -82,22 +82,26 @@ if st.button("Predict Severity"):
             "Number_of_Casualties": num_casualties
         }
 
-        input_features = pd.DataFrame([input_data])
+        input_df = pd.DataFrame([input_data])
 
-        # Align with model columns
+        # One-hot encode categorical variables
+        input_df_encoded = pd.get_dummies(input_df)
+
+        # Align with model features
         expected_cols = list(model.feature_names_in_)
         for col in expected_cols:
-            if col not in input_features.columns:
-                input_features[col] = 0  # Add missing columns
+            if col not in input_df_encoded.columns:
+                input_df_encoded[col] = 0  # Add missing columns
 
-        input_features = input_features[expected_cols]
+        input_df_encoded = input_df_encoded[expected_cols]
 
         # Prediction
-        prediction_index = model.predict(input_features)[0]
-        prediction_proba = model.predict_proba(input_features)[0]
+        prediction_index = model.predict(input_df_encoded)[0]
+        prediction_proba = model.predict_proba(input_df_encoded)[0]
         severity_labels = {0: 'Slight', 1: 'Serious', 2: 'Fatal'}
         predicted_severity = severity_labels[prediction_index]
 
+        # Show result
         st.subheader("Prediction Result")
         if predicted_severity == 'Fatal':
             st.error(f"Predicted Severity: *{predicted_severity}* (Probability: {prediction_proba[prediction_index]:.2%})")
